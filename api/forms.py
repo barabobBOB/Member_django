@@ -3,13 +3,13 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 class LoginForm(forms.Form):
-    email = forms.CharField(
-        widget = forms.EmailInput(attrs={"class":"form-control"}),
+    username = forms.CharField(
+        widget = forms.TextInput(attrs={"class":"form-control", "placeholder":"유저네임을 입력히세요."}),
         max_length=50,
         required=True
     )
     password = forms.CharField(
-        widget = forms.PasswordInput(attrs={"class":"form-control"}),
+        widget = forms.PasswordInput(attrs={"class":"form-control", "placeholder":"비밀번호를 입력하세요."}),
         max_length=15,
         required=True
     )
