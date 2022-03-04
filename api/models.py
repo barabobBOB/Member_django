@@ -11,5 +11,5 @@ class CreateUsers(models.Model):
     update_at = models.DateTimeField(auto_now= True)
     
 class Users(AbstractUser):
-    user = models.ForeignKey(CreateUsers, on_delete= models.CASCADE, null=True)
+    user = models.ForeignKey(CreateUsers, on_delete=models.CASCADE, null=True)
 

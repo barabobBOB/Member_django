@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def login_view(request):
-    is_ok = False
+    is_ok = None
     user = None
     msg = ""
     if request.method == 'POST':
@@ -24,7 +24,8 @@ def login_view(request):
             else:
                 if user.check_password(password):
                     login(request, user)
-                    is_ok = True       
+                    is_ok = True
+                    return redirect("userlist")       
     else:
         form = LoginForm()
     
@@ -53,14 +54,14 @@ def logout_view(request):
     return redirect('login')
 
 @login_required
-def userlist_view(request,userid):
+def userlist_view(request):
     if request.method == "GET":
         #첫페이지
         page = request.GET.get("page", 1)
         #아이디 값을 기준으로 유저정보 가져옴
         users = Users.objects.all().order_by("id")
         #페이지 단위로 쪼개????????/////////
-        paginator = Paginator(users, 10)
-        page_object = paginator.get_page(page)
+        # paginator = Paginator(users, 10)
+        # page_object = paginator.get_page(page)
         
-        return render(request, "userlist.html", {"page_object":page_object})        
+        return render(request, "userlist.html", {"page_object":users})
