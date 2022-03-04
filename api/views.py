@@ -1,25 +1,33 @@
-
 from django.shortcuts import redirect, render
 from api.forms import LoginForm, RegisterForm
 from .models import *
 from django.contrib.auth import login, logout, authenticate
+from django.core.paginator import Paginator
+
 # Create your views here.
 
 def login_view(request):
     is_ok = False
+    user = None
+    msg = ""
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
-            user = Users.objects.get(username=username)
-            if user.check_password(password):
-                login(request, user)
-                is_ok = True
+            try:
+                user = Users.objects.get(username=username)
+                msg = "올바른 유저네임과 패스워드를 입력해주세요."
+            except Users.DoesNotExist:
+                pass
+            else:
+                if user.check_password(password):
+                    login(request, user)
+                    is_ok = True       
     else:
         form = LoginForm()
-        
-    return render(request, "login.html", {"form": form, "is_ok": is_ok})
+    
+    return render(request, "login.html", {"form": form, "is_ok": is_ok, "msg": msg})
                
 def register_view(request):
     if request.method == "POST":
@@ -33,7 +41,7 @@ def register_view(request):
             user = authenticate(username=username, password=raw_pass)
             login(request, user)
             return redirect("login")
-        return render(request, "login.html", {"form": form})
+        return render(request, "register.html", {"form": form})
             
     else:
         form = RegisterForm()
@@ -42,3 +50,10 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+def userlist_view(request):
+    if request.method == "GET":
+        
+        users = Users.objects.all()
+        

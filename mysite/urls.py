@@ -16,7 +16,7 @@ Including another URLconf
 from xml.etree.ElementInclude import include
 from django.contrib import admin
 from django.urls import path
-from api.views import login_view, register_view
+from api.views import login_view, logout_view, register_view, userlist_view
 
 """
 만들어 내야하는 것
@@ -30,4 +30,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_view, name = 'login'),
     path('register/', register_view, name = "register"),
+    path('logout/', logout_view, name = 'logout'),
+    path('userlist/<int:question_id>', userlist_view, name="userlist")
 ]
