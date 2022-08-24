@@ -60,8 +60,5 @@ def userlist_view(request):
         page = request.GET.get("page", 1)
         #아이디 값을 기준으로 유저정보 가져옴
         users = Users.objects.all().order_by("id")
-        #페이지 단위로 쪼개????????/////////
-        # paginator = Paginator(users, 10)
-        # page_object = paginator.get_page(page)
         
         return render(request, "userlist.html", {"page_object":users})
