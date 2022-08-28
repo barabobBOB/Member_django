@@ -1,1 +1,2 @@
 Member_django
+예시
